@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafetín Central UCV</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<header>
+  <div class="logo-container">
+    <i class="fa-solid fa-mug-hot"></i>
+    <h1>Cafetín Central UCV</h1>
+  </div>
+  <div id="user-info" class="hidden">
+    <span id="welcome-msg">Hola, Usuario</span>
+    <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
+  </div>
+</header>
+
+<section id="login-section" class="active-section">
+  <div class="login-card">
+    <h2>Iniciar Sesión</h2>
+    <p>Por favor ingrese sus credenciales</p>
+    <form id="login-form">
+      <div class="input-group">
+        <label>Usuario</label>
+        <input type="text" id="username" placeholder="Ej: HolaUCV" required>
+      </div>
+      <div class="input-group">
+        <label>Contraseña</label>
+        <input type="password" id="password" placeholder="Ej: Hola_123" required>
+      </div>
+      <button type="submit" class="btn-primary">Ingresar</button>
+      <p id="login-error" class="error-msg hidden">Credenciales incorrectas.</p>
+    </form>
+    <div class="login-help">
+      <small>Roles: Cliente , Caja , Admin </small>
+    </div>
+  </div>
+</section>
+
+<section id="client-section" class="hidden section-container">
+  <div class="client-header">
+    <div class="loyalty-card">
+      <i class="fa-solid fa-star"></i>
+      <span>Tienes <strong id="points-display">150</strong> puntos</span>
+    </div>
+    <button onclick="toggleCart()" class="btn-cart">
+      <i class="fa-solid fa-cart-shopping"></i> Carrito (<span id="cart-count">0</span>)
+    </button>
+  </div>
+
+  <h3>Menú del Día</h3>
+  <div id="catalog-grid" class="grid-container">
+  </div>
+
+  <hr>
+
+  <h3>--------------------Historial de Compras-----------------------</h3>
+  <div class="history-container">
+    <table>
+      <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Productos</th>
+        <th>Total</th>
+      </tr>
+      </thead>
+      <tbody id="history-table-body">
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div id="cart-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-btn" onclick="toggleCart()">&times;</span>
+    <h2>Tu Pedido</h2>
+    <ul id="cart-items-list"></ul>
+    <div class="cart-summary">
+      <p>Total: <strong id="cart-total">$0.00</strong></p>
+      <button onclick="checkoutClient()" class="btn-primary">Confirmar Compra</button>
+    </div>
+  </div>
+</div>
+
+<section id="cashier-section" class="hidden section-container">
+  <h2>Punto de Venta (Caja)</h2>
+  <div class="pos-layout">
+    <div class="pos-products">
+      <h3>Selección Rápida</h3>
+      <div id="pos-grid" class="grid-mini"></div>
+    </div>
+    <div class="pos-summary">
+      <h3>Ticket Actual</h3>
+      <ul id="pos-list"></ul>
+      <div class="pos-total">
+        <p>Total a Pagar: <span id="pos-total-amount">$0.00</span></p>
+      </div>
+      <button onclick="printReceipt()" class="btn-success">Emitir Recibo</button>
+      <button onclick="clearPos()" class="btn-danger">Cancelar</button>
+    </div>
+  </div>
+</section>
+
+<section id="admin-section" class="hidden section-container">
+  <h2>Gestión del Menú</h2>
+  <div class="admin-panel">
+    <div class="add-product-form">
+      <h3>Agregar Nuevo Producto</h3>
+      <form id="admin-form">
+        <input type="text" id="new-name" placeholder="Nombre" required>
+        <input type="number" id="new-price" step="0.01" placeholder="Precio ($)" required>
+        <input type="text" id="new-img" placeholder="URL imagen (opcional)">
+        <button type="submit" class="btn-primary">Agregar al Menú</button>
+      </form>
+    </div>
+    <div class="manage-products">
+      <h3>Productos Existentes</h3>
+      <table class="admin-table">
+        <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th>Acción</th>
+        </tr>
+        </thead>
+        <tbody id="admin-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div id="toast" class="toast hidden">Producto agregado al carrito</div>
+
+<script src="script.js"></script>
+</body>
+</html>
