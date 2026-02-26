@@ -90,7 +90,9 @@ justify-content: space-between;
     box-shadow: 0 4px 15px rgb(80, 54, 35);
     width: 100%;
     max-width: 400px;
-    text-align: center; }
+    text-align: center;
+    border: 2px solid ;
+}
 
 .input-group { margin-bottom: 15px;
     text-align: left; }

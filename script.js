@@ -284,7 +284,7 @@ function clearPos() {
 
 function printReceipt() {
     if (posOrder.length === 0) return alert("Nada para cobrar");
-    alert("¡Recibo impreso exitosamente!");
+    alert("Recibo Emitido ,¡Gracias por su compra!");
     clearPos();
 }
 
