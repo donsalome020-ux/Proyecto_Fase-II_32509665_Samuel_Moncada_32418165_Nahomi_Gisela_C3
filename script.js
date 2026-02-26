@@ -147,7 +147,7 @@ function updateCartUI() {
                 <span>${item.name} <strong>x${item.quantity}</strong></span>
                 <div>
                     <span>$${itemTotal.toFixed(2)}</span>
-                    <button class="btn-remove" onclick="removeFromCart(${item.id})"><i class="fa-solid fa-minus"></i></button>
+                    <button class="btn-remove" onclick="removeFromCart(${item.id})">x</button>
                 </div>
             </li>
         `;
@@ -269,7 +269,7 @@ function updatePosUI() {
                 <span>${item.name} <strong>x${item.quantity}</strong></span>
                 <div>
                     <span>$${itemTotal.toFixed(2)}</span>
-                    <button class="btn-remove" onclick="removeFromPos(${item.id})"><i class="fa-solid fa-minus"></i></button>
+                    <button class="btn-remove" onclick="removeFromPos(${item.id})">x</button>
                 </div>
             </li>
         `;

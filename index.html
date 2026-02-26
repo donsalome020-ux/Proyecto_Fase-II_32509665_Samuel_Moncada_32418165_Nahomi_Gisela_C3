@@ -5,17 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cafetín Central UCV</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
 <header>
   <div class="logo-container">
-    <i class="fa-solid fa-mug-hot"></i>
-    <h1>Cafetín Central UCV</h1>
+    <h1>TuCafetinCentral☕️</h1>
   </div>
   <div id="user-info" class="hidden">
-    <span id="welcome-msg">Hola, Usuario</span>
+    <span id="welcome-msg">           Hola,    Usuario</span>
     <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
   </div>
 </header>
@@ -40,16 +38,20 @@
       <small>Roles: Cliente , Caja , Admin </small>
     </div>
   </div>
+   <div class="Frente">
+ 
+  </div>
+
 </section>
+
 
 <section id="client-section" class="hidden section-container">
   <div class="client-header">
     <div class="loyalty-card">
-      <i class="fa-solid fa-star"></i>
       <span>Tienes <strong id="points-display">150</strong> puntos</span>
     </div>
     <button onclick="toggleCart()" class="btn-cart">
-      <i class="fa-solid fa-cart-shopping"></i> Carrito (<span id="cart-count">0</span>)
+      Carrito (<span id="cart-count">0</span>)
     </button>
   </div>
 
