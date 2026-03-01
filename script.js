@@ -1,6 +1,3 @@
-/* PROYECTO CAFETÍN CENTRAL - FASE III
-   Versión: Multiplicadores (x3) y Eliminar Productos
-*/
 
 // --- 1. DATOS ---
 const USERS = [
