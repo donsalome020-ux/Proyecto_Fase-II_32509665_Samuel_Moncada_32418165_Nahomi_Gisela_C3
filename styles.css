@@ -133,8 +133,7 @@ justify-content: space-between;
 
         grid-template-columns: repeat(auto-fit, minmax(200px,1fr))!important;
     }
-    grid-template-columns: repeat(auto-fit, minmax(45%,1fr));
-    gap: 20px;
+    grid-template-columns: 1fr 1fr;
     margin-bottom: 30px; }
 
 .product-card { border: 1px solid rgba(209, 209, 209, 0.94);
