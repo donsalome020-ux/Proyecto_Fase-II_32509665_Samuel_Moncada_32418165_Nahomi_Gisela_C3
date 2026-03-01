@@ -129,7 +129,11 @@ justify-content: space-between;
 }
 
 .grid-container { display: grid;
-   grid-template-columns: repeat(auto-fit,minmax( 200px, 1fr));
+    @media (min-width:400px) {
+
+        grid-template-columns: repeat(auto-fit, minmax(200px,1fr))!important;
+    }
+    grid-template-columns: repeat(auto-fit, minmax(45%,1fr));
     gap: 20px;
     margin-bottom: 30px; }
 
