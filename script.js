@@ -210,7 +210,7 @@ function renderHistory() {
         tbody.innerHTML += `
             <tr>
                 <td>${p.date}</td>
-                <td>${p.items}</td>
+                <td>${p.items}</td><br>
                 <td>$${p.total.toFixed(2)}</td>
             </tr>
         `;
