@@ -9,61 +9,56 @@
 <body>
 
 <header>
-  <div class="logo-container">
+  <div class="contenedor-logo">
     <h1>Tucafetin Central☕️</h1>
   </div>
-  <div id="user-info" class="hidden">
-    <span id="welcome-msg">           Hola,    Usuario</span>
-    <button onclick="logout()" class="btn-logout">Cerrar Sesión </button>
+  <div id="info-usuario" class="oculto">
+    <span id="mensaje-bienvenida">Hola, Usuario</span>
+    <button onclick="cerrarSesion()" class="btn-cerrar-sesion">Cerrar Sesión</button>
   </div>
 </header>
 
-<section id="login-section" class="active-section">
-
-  <div class="login-card">
+<section id="seccion-login" class="seccion-activa">
+  <div class="tarjeta-login">
     <h2>Iniciar Sesión</h2>
     <p>Por favor ingrese sus credenciales</p>
-    <form id="login-form">
-      <div class="input-group">
+    <form id="formulario-login">
+      <div class="grupo-input">
         <label>Usuario</label>
-        <input type="text" id="username" placeholder="Ej: HolaUCV" required>
+        <input type="text" id="nombre-usuario" placeholder="Ej: HolaUCV" required>
       </div>
-      <div class="input-group">
+      <div class="grupo-input">
         <label>Contraseña</label>
-        <input type="password" id="password" placeholder="Ej: Hola_123" required>
+        <input type="password" id="clave-acceso" placeholder="Ej: Hola_123" required>
       </div>
-      <button type="submit" class="btn-primary">Ingresar</button>
-      <p id="login-error" class="error-msg hidden">Credenciales incorrectas.</p>
+      <button type="submit" class="btn-primario">Ingresar</button>
+      <p id="error-login" class="mensaje-error oculto">Credenciales incorrectas.</p>
     </form>
-    <div class="login-help">
+    <div class="ayuda-login">
       <small>Roles: Cliente , Caja , Admin </small>
     </div>
   </div>
-   <div class="Frente">
- 
-  </div>
-
+  <div class="Frente"></div>
 </section>
 
-
-<section id="client-section" class="hidden section-container">
-  <div class="client-header">
-    <div class="loyalty-card">
-      <span>Tienes <strong id="points-display">150</strong> puntos</span>
+<section id="seccion-cliente" class="oculto contenedor-seccion">
+  <div class="cabecera-cliente">
+    <div class="tarjeta-lealtad">
+      <span>Tienes <strong id="mostrar-puntos">150</strong> puntos</span>
     </div>
-    <button onclick="toggleCart()" class="btn-cart">
-      Carrito (<span id="cart-count">0</span>)
+    <button onclick="alternarCarrito()" class="btn-carrito">
+      Carrito (<span id="contador-carrito">0</span>)
     </button>
   </div>
 
   <h3>Menú del Día</h3>
-  <div id="catalog-grid" class="grid-container">
+  <div id="cuadricula-catalogo" class="contenedor-cuadricula">
   </div>
 
   <hr>
 
   <h3>------------ Historial de Compras -------------</h3>
-  <div class="history-container">
+  <div class="contenedor-historial">
     <table>
       <thead>
       <tr>
@@ -72,58 +67,58 @@
         <th>Total</th>
       </tr>
       </thead>
-      <tbody id="history-table-body">
+      <tbody id="cuerpo-tabla-historial">
       </tbody>
     </table>
   </div>
 </section>
 
-<div id="cart-modal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close-btn" onclick="toggleCart()">&times;</span>
+<div id="modal-carrito" class="modal oculto">
+  <div class="contenido-modal">
+    <span class="btn-cerrar" onclick="alternarCarrito()">&times;</span>
     <h2>Tu Pedido</h2>
-    <ul id="cart-items-list"></ul>
-    <div class="cart-summary">
-      <p>Total: <strong id="cart-total">$0.00</strong></p>
-      <button onclick="checkoutClient()" class="btn-primary">Confirmar Compra</button>
+    <ul id="lista-items-carrito"></ul>
+    <div class="resumen-carrito">
+      <p>Total: <strong id="total-carrito">$0.00</strong></p>
+      <button onclick="procesarPagoCliente()" class="btn-primario">Confirmar Compra</button>
     </div>
   </div>
 </div>
 
-<section id="cashier-section" class="hidden section-container">
+<section id="seccion-caja" class="oculto contenedor-seccion">
   <h2>Punto de Venta (Caja)</h2>
-  <div class="pos-layout">
-    <div class="pos-products">
+  <div class="diseno-caja">
+    <div class="productos-caja">
       <h3>Selección Rápida</h3>
-      <div id="pos-grid" class="grid-mini"></div>
+      <div id="cuadricula-caja" class="cuadricula-mini"></div>
     </div>
-    <div class="pos-summary">
+    <div class="resumen-caja">
       <h3>Ticket Actual</h3>
-      <ul id="pos-list"></ul>
-      <div class="pos-total">
-        <p>Total a Pagar: <span id="pos-total-amount">$0.00</span></p>
+      <ul id="lista-caja"></ul>
+      <div class="total-caja">
+        <p>Total a Pagar: <span id="monto-total-caja">$0.00</span></p>
       </div>
-      <button onclick="printReceipt()" class="btn-success">Emitir Recibo</button>
-      <button onclick="clearPos()" class="btn-danger">Cancelar</button>
+      <button onclick="imprimirRecibo()" class="btn-exito">Emitir Recibo</button>
+      <button onclick="limpiarCaja()" class="btn-peligro">Cancelar</button>
     </div>
   </div>
 </section>
 
-<section id="admin-section" class="hidden section-container">
+<section id="seccion-admin" class="oculto contenedor-seccion">
   <h2>Gestión del Menú</h2>
-  <div class="admin-panel">
-    <div class="add-product-form">
+  <div class="panel-admin">
+    <div class="form-agregar-producto">
       <h3>Agregar Nuevo Producto</h3>
-      <form id="admin-form">
-        <input type="text" id="new-name" placeholder="Nombre" required>
-        <input type="number" id="new-price" step="0.01" placeholder="Precio ($)" required>
-        <input type="text" id="new-img" placeholder="URl (opcional) " required>
-        <button type="submit" class="btn-primary">Agregar al Menú</button>
+      <form id="formulario-admin">
+        <input type="text" id="nuevo-nombre" placeholder="Nombre" required>
+        <input type="number" id="nuevo-precio" step="0.01" placeholder="Precio ($)" required>
+        <input type="text" id="nueva-img" placeholder="URl (opcional)" required>
+        <button type="submit" class="btn-primario">Agregar al Menú</button>
       </form>
     </div>
-    <div class="manage-products">
+    <div class="gestionar-productos">
       <h3>Productos Existentes</h3>
-      <table class="admin-table">
+      <table class="tabla-admin">
         <thead>
         <tr>
           <th>Producto</th>
@@ -131,13 +126,13 @@
           <th>Acción</th>
         </tr>
         </thead>
-        <tbody id="admin-table-body"></tbody>
+        <tbody id="cuerpo-tabla-admin"></tbody>
       </table>
     </div>
   </div>
 </section>
 
-<div id="toast" class="toast hidden">Producto agregado al carrito</div>
+<div id="notificacion" class="notificacion oculto">Producto agregado al carrito</div>
 
 <script src="script.js"></script>
 </body>

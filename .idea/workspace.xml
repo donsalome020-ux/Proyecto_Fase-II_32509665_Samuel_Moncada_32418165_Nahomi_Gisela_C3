@@ -5,14 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26df0d63-57d5-4c4b-ac99-8c0c40fd6f67" name="Changes" comment="init commit">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Imagenes/Cafe.png" beforeDir="false" afterPath="$PROJECT_DIR$/imagenes/Cafe.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Imagenes/EmpanadaDeCarne.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/imagenes/EmpanadaDeCarne.jpeg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Imagenes/EmpanasDeQueso.png" beforeDir="false" afterPath="$PROJECT_DIR$/imagenes/EmpanasDeQueso.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Imagenes/Jugo.png" beforeDir="false" afterPath="$PROJECT_DIR$/imagenes/Jugo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Imagenes/Sandwich.png" beforeDir="false" afterPath="$PROJECT_DIR$/imagenes/Sandwich.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Imagenes/fotos.png" beforeDir="false" afterPath="$PROJECT_DIR$/imagenes/fotos.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imagenes/Cafe.png" beforeDir="false" afterPath="$PROJECT_DIR$/Imagenes/Cafe.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imagenes/EmpanadaDeCarne.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/Imagenes/EmpanadaDeCarne.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imagenes/EmpanasDeQueso.png" beforeDir="false" afterPath="$PROJECT_DIR$/Imagenes/EmpanasDeQueso.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imagenes/Jugo.png" beforeDir="false" afterPath="$PROJECT_DIR$/Imagenes/Jugo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imagenes/Sandwich.png" beforeDir="false" afterPath="$PROJECT_DIR$/Imagenes/Sandwich.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imagenes/fotos.png" beforeDir="false" afterPath="$PROJECT_DIR$/Imagenes/fotos.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +133,7 @@
       <workItem from="1772586796950" duration="3935000" />
       <workItem from="1772593930099" duration="983000" />
       <workItem from="1772842375479" duration="456000" />
-      <workItem from="1772991756725" duration="687000" />
+      <workItem from="1772991756725" duration="1949000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <option name="closed" value="true" />
@@ -254,7 +255,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772842417084</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="init commit">
+      <option name="closed" value="true" />
+      <created>1772992922055</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1772992922055</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

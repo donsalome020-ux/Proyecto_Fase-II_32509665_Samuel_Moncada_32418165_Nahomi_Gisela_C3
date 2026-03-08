@@ -1,322 +1,320 @@
-
 // --- 1. DATOS ---
-const USERS = [
-    { user: 'ClienteUCV', pass: 'Central_123', role: 'client', name: 'Estudiante UCV' },
-    { user: 'caja_01', pass: 'Cajero#123', role: 'cashier', name: 'Caja Principal' },
-    { user: 'adminRoot', pass: 'cafetinAdmin', role: 'admin', name: 'Administrador' }
+const USUARIOS = [
+    { usuario: 'ClienteUCV', clave: 'Central_123', rol: 'cliente', nombre: 'Estudiante UCV' },
+    { usuario: 'caja_01', clave: 'Cajero#123', rol: 'cajero', nombre: 'Caja Principal' },
+    { usuario: 'adminRoot', clave: 'cafetinAdmin', rol: 'admin', nombre: 'Administrador' }
 ];
 
-let products = [
-    { id: 1, name: 'Empanada de Queso', price: 1.50, img: 'imagenes/EmpanasDeQueso.png' },
-    { id: 2, name: 'Empanada de Carne', price: 1.80, img: 'imagenes/EmpanadaDeCarne.jpeg' },
-    { id: 3, name: 'Café Negro', price: 0.80, img: 'imagenes/Cafe.png' },
-    { id: 4, name: 'Jugo Natural', price: 2.00, img: 'imagenes/Jugo.png' },
-    { id: 5, name: 'Sandwich de Jamón', price: 3.50, img: 'imagenes/Sandwich.png' }
+let productos = [
+    { id: 1, nombre: 'Empanada de Queso', precio: 1.50, img: 'Imagenes/EmpanasDeQueso.png' },
+    { id: 2, nombre: 'Empanada de Carne', precio: 1.80, img: 'Imagenes/EmpanadaDeCarne.jpeg' },
+    { id: 3, nombre: 'Café Negro', precio: 0.80, img: 'Imagenes/Cafe.png' },
+    { id: 4, nombre: 'Jugo Natural', precio: 2.00, img: 'Imagenes/Jugo.png' },
+    { id: 5, nombre: 'Sandwich de Jamón', precio: 3.50, img: 'Imagenes/Sandwich.png' }
 ];
 
 // Estado global
-let currentUser = null;
-let cart = [];
-let purchaseHistory = [];
-let posOrder = [];
-let loyaltyPoints = 150;
+let usuarioActual = null;
+let carrito = [];
+let historialCompras = [];
+let ordenCaja = [];
+let puntosLealtad = 150;
 
 // --- FUNCIÓN UTILITARIA PARA AGRUPAR ---
 function agruparProductos(arreglo) {
     const agrupados = {};
     arreglo.forEach(item => {
         if (!agrupados[item.id]) {
-            agrupados[item.id] = { ...item, quantity: 1 };
+            agrupados[item.id] = { ...item, cantidad: 1 };
         } else {
-            agrupados[item.id].quantity++;
+            agrupados[item.id].cantidad++;
         }
     });
     return Object.values(agrupados);
 }
 
 // --- 2. SESIÓN ---
-const loginForm = document.getElementById('login-form');
-const loginError = document.getElementById('login-error');
+const formularioLogin = document.getElementById('formulario-login');
+const errorLogin = document.getElementById('error-login');
 
-loginForm.addEventListener('submit', (e) => {
+formularioLogin.addEventListener('submit', (e) => {
     e.preventDefault();
-    const userIn = document.getElementById('username').value;
-    const passIn = document.getElementById('password').value;
-    const foundUser = USERS.find(u => u.user === userIn && u.pass === passIn);
+    const entradaUsuario = document.getElementById('nombre-usuario').value;
+    const entradaClave = document.getElementById('clave-acceso').value;
+    const usuarioEncontrado = USUARIOS.find(u => u.usuario === entradaUsuario && u.clave === entradaClave);
 
-    if (foundUser) {
-        currentUser = foundUser;
-        initSession();
+    if (usuarioEncontrado) {
+        usuarioActual = usuarioEncontrado;
+        iniciarSesion();
     } else {
-        loginError.classList.remove('hidden');
+        errorLogin.classList.remove('oculto');
     }
 });
 
-function initSession() {
-    document.getElementById('login-section').classList.add('hidden');
-    document.getElementById('user-info').classList.remove('hidden');
-    document.getElementById('welcome-msg').innerText = `Hola, ${currentUser.name}`;
+function iniciarSesion() {
+    document.getElementById('seccion-login').classList.add('oculto');
+    document.getElementById('info-usuario').classList.remove('oculto');
+    document.getElementById('mensaje-bienvenida').innerText = `Hola, ${usuarioActual.nombre}`;
 
-    hideAllSections();
+    ocultarTodasLasSecciones();
 
-    if (currentUser.role === 'client') {
-        document.getElementById('client-section').classList.remove('hidden');
-        renderCatalog();
-        renderHistory();
-        updatePointsUI();
-    } else if (currentUser.role === 'cashier') {
-        document.getElementById('cashier-section').classList.remove('hidden');
-        renderPos();
-    } else if (currentUser.role === 'admin') {
-        document.getElementById('admin-section').classList.remove('hidden');
-        renderAdmin();
+    if (usuarioActual.rol === 'cliente') {
+        document.getElementById('seccion-cliente').classList.remove('oculto');
+        renderizarCatalogo();
+        renderizarHistorial();
+        actualizarInterfazPuntos();
+    } else if (usuarioActual.rol === 'cajero') {
+        document.getElementById('seccion-caja').classList.remove('oculto');
+        renderizarCaja();
+    } else if (usuarioActual.rol === 'admin') {
+        document.getElementById('seccion-admin').classList.remove('oculto');
+        renderizarAdmin();
     }
 }
 
-function logout() {
-    currentUser = null;
-    cart = [];
-    posOrder = [];
-    hideAllSections();
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-    document.getElementById('user-info').classList.add('hidden');
-    document.getElementById('login-section').classList.remove('hidden');
+function cerrarSesion() {
+    usuarioActual = null;
+    carrito = [];
+    ordenCaja = [];
+    ocultarTodasLasSecciones();
+    document.getElementById('nombre-usuario').value = '';
+    document.getElementById('clave-acceso').value = '';
+    document.getElementById('info-usuario').classList.add('oculto');
+    document.getElementById('seccion-login').classList.remove('oculto');
 }
 
-function hideAllSections() {
-    document.getElementById('client-section').classList.add('hidden');
-    document.getElementById('cashier-section').classList.add('hidden');
-    document.getElementById('admin-section').classList.add('hidden');
+function ocultarTodasLasSecciones() {
+    document.getElementById('seccion-cliente').classList.add('oculto');
+    document.getElementById('seccion-caja').classList.add('oculto');
+    document.getElementById('seccion-admin').classList.add('oculto');
 }
 
 // --- 3. CLIENTE ---
-function imgError(image) {
-    image.onerror = "";
-    image.src = "https://via.placeholder.com/150?text=Sin+Imagen";
+function manejarErrorImagen(imagen) {
+    imagen.onerror = "";
+    imagen.src = "https://via.placeholder.com/150?text=Sin+Imagen";
     return true;
 }
 
-function renderCatalog() {
-    const grid = document.getElementById('catalog-grid');
-    grid.innerHTML = '';
-    products.forEach(prod => {
-        grid.innerHTML += `
-            <div class="product-card">
-                <img src="${prod.img}" alt="${prod.name}" class="product-img" onerror="imgError(this)">
-                <h4>${prod.name}</h4>
-                <span class="price-tag">$${prod.price.toFixed(2)}</span>
-                <button class="btn-primary" onclick="addToCart(${prod.id})">Añadir</button>
+function renderizarCatalogo() {
+    const cuadricula = document.getElementById('cuadricula-catalogo');
+    cuadricula.innerHTML = '';
+    productos.forEach(prod => {
+        cuadricula.innerHTML += `
+            <div class="tarjeta-producto">
+                <img src="${prod.img}" alt="${prod.nombre}" class="img-producto" onerror="manejarErrorImagen(this)">
+                <h4>${prod.nombre}</h4>
+                <span class="etiqueta-precio">$${prod.precio.toFixed(2)}</span>
+                <button class="btn-primario" onclick="agregarAlCarrito(${prod.id})">Añadir</button>
             </div>
         `;
     });
 }
 
-function addToCart(id) {
-    const prod = products.find(p => p.id === id);
-    cart.push(prod);
-    updateCartUI();
-    showToast(`¡${prod.name} agregado!`);
+function agregarAlCarrito(id) {
+    const prod = productos.find(p => p.id === id);
+    carrito.push(prod);
+    actualizarInterfazCarrito();
+    mostrarNotificacion(`¡${prod.nombre} agregado!`);
 }
 
-function removeFromCart(id) {
-    // Encuentra el primer índice del producto con ese id y lo elimina
-    const index = cart.findIndex(item => item.id === id);
-    if (index !== -1) {
-        cart.splice(index, 1);
-        updateCartUI();
+function quitarDelCarrito(id) {
+    const indice = carrito.findIndex(item => item.id === id);
+    if (indice !== -1) {
+        carrito.splice(indice, 1);
+        actualizarInterfazCarrito();
     }
 }
 
-function updateCartUI() {
-    document.getElementById('cart-count').innerText = cart.length;
-    const list = document.getElementById('cart-items-list');
-    list.innerHTML = '';
+function actualizarInterfazCarrito() {
+    document.getElementById('contador-carrito').innerText = carrito.length;
+    const lista = document.getElementById('lista-items-carrito');
+    lista.innerHTML = '';
     let total = 0;
 
-    const cartAgrupado = agruparProductos(cart);
+    const carritoAgrupado = agruparProductos(carrito);
 
-    cartAgrupado.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
-        list.innerHTML += `
-            <li class="list-item">
-                <span>${item.name} <strong>x${item.quantity}</strong></span>
+    carritoAgrupado.forEach(item => {
+        const totalItem = item.precio * item.cantidad;
+        total += totalItem;
+        lista.innerHTML += `
+            <li class="item-lista">
+                <span>${item.nombre} <strong>x${item.cantidad}</strong></span>
                 <div>
-                    <span>$${itemTotal.toFixed(2)}</span>
-                    <button class="btn-remove" onclick="removeFromCart(${item.id})">x</button>
+                    <span>$${totalItem.toFixed(2)}</span>
+                    <button class="btn-eliminar" onclick="quitarDelCarrito(${item.id})">x</button>
                 </div>
             </li>
         `;
     });
-    document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
+    document.getElementById('total-carrito').innerText = `$${total.toFixed(2)}`;
 }
 
-function toggleCart() {
-    document.getElementById('cart-modal').classList.toggle('hidden');
+function alternarCarrito() {
+    document.getElementById('modal-carrito').classList.toggle('oculto');
 }
 
-function checkoutClient() {
-    if (cart.length === 0) {
+function procesarPagoCliente() {
+    if (carrito.length === 0) {
         alert("El carrito está vacío");
         return;
     }
 
-    const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
-    const pointsEarned = Math.floor(totalAmount * 10);
-    loyaltyPoints += pointsEarned;
+    const montoTotal = carrito.reduce((suma, item) => suma + item.precio, 0);
+    const puntosGanados = Math.floor(montoTotal * 10);
+    puntosLealtad += puntosGanados;
 
-    const cartAgrupado = agruparProductos(cart);
-    const itemsString = cartAgrupado.map(i => `${i.name} (x${i.quantity})`).join(', ');
+    const carritoAgrupado = agruparProductos(carrito);
+    const textoArticulos = carritoAgrupado.map(i => `${i.nombre} (x${i.cantidad})`).join(', ');
 
-    const purchase = {
-        date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
-        items: itemsString,
-        total: totalAmount
+    const compra = {
+        fecha: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+        articulos: textoArticulos,
+        total: montoTotal
     };
 
-    purchaseHistory.push(purchase);
+    historialCompras.push(compra);
 
-    alert(`Compra exitosa ($${totalAmount.toFixed(2)}).\n¡Ganaste ${pointsEarned} puntos nuevos!`);
+    alert(`Compra exitosa ($${montoTotal.toFixed(2)}).\n¡Ganaste ${puntosGanados} puntos nuevos!`);
 
-    cart = [];
-    updateCartUI();
-    updatePointsUI();
-    toggleCart();
-    renderHistory();
+    carrito = [];
+    actualizarInterfazCarrito();
+    actualizarInterfazPuntos();
+    alternarCarrito();
+    renderizarHistorial();
 }
 
-function updatePointsUI() {
-    const pointsSpan = document.getElementById('points-display');
-    if (pointsSpan) {
-        pointsSpan.innerText = loyaltyPoints;
+function actualizarInterfazPuntos() {
+    const spanPuntos = document.getElementById('mostrar-puntos');
+    if (spanPuntos) {
+        spanPuntos.innerText = puntosLealtad;
     }
 }
 
-function renderHistory() {
-    const tbody = document.getElementById('history-table-body');
-    if (!tbody) return;
-    tbody.innerHTML = '';
+function renderizarHistorial() {
+    const cuerpoTabla = document.getElementById('cuerpo-tabla-historial');
+    if (!cuerpoTabla) return;
+    cuerpoTabla.innerHTML = '';
 
-    if (purchaseHistory.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center">Sin compras recientes</td></tr>';
+    if (historialCompras.length === 0) {
+        cuerpoTabla.innerHTML = '<tr><td colspan="3" style="text-align:center">Sin compras recientes</td></tr>';
         return;
     }
 
-    purchaseHistory.slice().reverse().forEach(p => {
-        tbody.innerHTML += `
+    historialCompras.slice().reverse().forEach(c => {
+        cuerpoTabla.innerHTML += `
             <tr>
-                <td>${p.date}</td>
-                <td>${p.items}</td>
-                <td>$${p.total.toFixed(2)}</td>
+                <td>${c.fecha}</td>
+                <td>${c.articulos}</td>
+                <td>$${c.total.toFixed(2)}</td>
             </tr>
         `;
     });
 }
 
-function showToast(message) {
-    const toast = document.getElementById('toast');
-    toast.innerText = message;
-    toast.classList.remove('hidden');
+function mostrarNotificacion(mensaje) {
+    const notificacion = document.getElementById('notificacion');
+    notificacion.innerText = mensaje;
+    notificacion.classList.remove('oculto');
     setTimeout(() => {
-        toast.classList.add('hidden');
+        notificacion.classList.add('oculto');
     }, 3000);
 }
 
 // --- 4. CAJA ---
-function renderPos() {
-    const grid = document.getElementById('pos-grid');
-    grid.innerHTML = '';
-    products.forEach(prod => {
-        grid.innerHTML += `
-            <div class="pos-item" onclick="addToPos(${prod.id})">
-                <strong>${prod.name}</strong><br>
-                $${prod.price.toFixed(2)}
+function renderizarCaja() {
+    const cuadricula = document.getElementById('cuadricula-caja');
+    cuadricula.innerHTML = '';
+    productos.forEach(prod => {
+        cuadricula.innerHTML += `
+            <div class="item-caja" onclick="agregarACaja(${prod.id})">
+                <strong>${prod.nombre}</strong><br>
+                $${prod.precio.toFixed(2)}
             </div>
         `;
     });
 }
 
-function addToPos(id) {
-    const prod = products.find(p => p.id === id);
-    posOrder.push(prod);
-    updatePosUI();
+function agregarACaja(id) {
+    const prod = productos.find(p => p.id === id);
+    ordenCaja.push(prod);
+    actualizarInterfazCaja();
 }
 
-function removeFromPos(id) {
-    const index = posOrder.findIndex(item => item.id === id);
-    if (index !== -1) {
-        posOrder.splice(index, 1);
-        updatePosUI();
+function quitarDeCaja(id) {
+    const indice = ordenCaja.findIndex(item => item.id === id);
+    if (indice !== -1) {
+        ordenCaja.splice(indice, 1);
+        actualizarInterfazCaja();
     }
 }
 
-function updatePosUI() {
-    const list = document.getElementById('pos-list');
-    list.innerHTML = '';
+function actualizarInterfazCaja() {
+    const lista = document.getElementById('lista-caja');
+    lista.innerHTML = '';
     let total = 0;
 
-    const posAgrupado = agruparProductos(posOrder);
+    const cajaAgrupada = agruparProductos(ordenCaja);
 
-    posAgrupado.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
-        list.innerHTML += `
-            <li class="list-item">
-                <span>${item.name} <strong>x${item.quantity}</strong></span>
+    cajaAgrupada.forEach(item => {
+        const totalItem = item.precio * item.cantidad;
+        total += totalItem;
+        lista.innerHTML += `
+            <li class="item-lista">
+                <span>${item.nombre} <strong>x${item.cantidad}</strong></span>
                 <div>
-                    <span>$${itemTotal.toFixed(2)}</span>
-                    <button class="btn-remove" onclick="removeFromPos(${item.id})">x</button>
+                    <span>$${totalItem.toFixed(2)}</span>
+                    <button class="btn-eliminar" onclick="quitarDeCaja(${item.id})">x</button>
                 </div>
             </li>
         `;
     });
-    document.getElementById('pos-total-amount').innerText = `$${total.toFixed(2)}`;
+    document.getElementById('monto-total-caja').innerText = `$${total.toFixed(2)}`;
 }
 
-function clearPos() {
-    posOrder = [];
-    updatePosUI();
+function limpiarCaja() {
+    ordenCaja = [];
+    actualizarInterfazCaja();
 }
 
-function printReceipt() {
-    if (posOrder.length === 0) return alert("Nada para cobrar");
+function imprimirRecibo() {
+    if (ordenCaja.length === 0) return alert("Nada para cobrar");
     alert("Recibo Emitido ,¡Gracias por su compra!");
-    clearPos();
+    limpiarCaja();
 }
 
 // --- 5. ADMIN ---
-function renderAdmin() {
-    const tbody = document.getElementById('admin-table-body');
-    tbody.innerHTML = '';
-    products.forEach((prod, index) => {
-        tbody.innerHTML += `
+function renderizarAdmin() {
+    const cuerpoTabla = document.getElementById('cuerpo-tabla-admin');
+    cuerpoTabla.innerHTML = '';
+    productos.forEach((prod, indice) => {
+        cuerpoTabla.innerHTML += `
             <tr>
-                <td>${prod.name}</td>
-                <td>$${prod.price.toFixed(2)}</td>
-                <td><button class="btn-danger" onclick="deleteProduct(${index})">Eliminar</button></td>
+                <td>${prod.nombre}</td>
+                <td>$${prod.precio.toFixed(2)}</td>
+                <td><button class="btn-peligro" onclick="eliminarProducto(${indice})">Eliminar</button></td>
             </tr>
         `;
     });
 }
 
-document.getElementById('admin-form').addEventListener('submit', (e) => {
+document.getElementById('formulario-admin').addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('new-name').value;
-    const price = parseFloat(document.getElementById('new-price').value);
+    const nombre = document.getElementById('nuevo-nombre').value;
+    const precio = parseFloat(document.getElementById('nuevo-precio').value);
 
-    const imgInput = document.getElementById('new-img').value;
-    const img = imgInput ? imgInput : 'https://via.placeholder.com/150?text=Sin+Imagen';
+    const entradaImg = document.getElementById('nueva-img').value;
+    const img = entradaImg ? entradaImg : 'https://via.placeholder.com/150?text=Sin+Imagen';
 
-    products.push({ id: Date.now(), name, price, img });
+    productos.push({ id: Date.now(), nombre, precio, img });
     alert("Producto guardado");
-    renderAdmin();
+    renderizarAdmin();
     e.target.reset();
 });
 
-function deleteProduct(index) {
+function eliminarProducto(indice) {
     if(confirm("¿Borrar producto?")) {
-        products.splice(index, 1);
-        renderAdmin();
+        productos.splice(indice, 1);
+        renderizarAdmin();
     }
 }
