@@ -8,7 +8,7 @@ const USERS = [
 
 let products = [
     { id: 1, name: 'Empanada de Queso', price: 1.50, img: 'imagenes/EmpanasDeQueso.png' },
-    { id: 2, name: 'Empanada de Carne', price: 1.80, img: 'imagenes/EmpanadadeCarne.jpeg' },
+    { id: 2, name: 'Empanada de Carne', price: 1.80, img: 'imagenes/EmpanadaDeCarne.jpeg' },
     { id: 3, name: 'Café Negro', price: 0.80, img: 'imagenes/Cafe.png' },
     { id: 4, name: 'Jugo Natural', price: 2.00, img: 'imagenes/Jugo.png' },
     { id: 5, name: 'Sandwich de Jamón', price: 3.50, img: 'imagenes/Sandwich.png' }
