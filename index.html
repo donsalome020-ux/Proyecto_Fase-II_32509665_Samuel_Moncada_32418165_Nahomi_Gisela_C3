@@ -71,6 +71,16 @@
       </tbody>
     </table>
   </div>
+  <hr>
+  <h3>------------ Reseñas del Cafetín -------------</h3>
+  <div class="contenedor-resenas">
+    <form id="formulario-resena">
+      <textarea id="texto-resena" placeholder="Escribe tu reseña sobre el Cafetín Central aquí..." required></textarea>
+      <button type="submit" class="btn-primario">Publicar Reseña</button>
+    </form>
+    <div id="lista-resenas-cliente">
+    </div>
+  </div>
 </section>
 
 <div id="modal-carrito" class="modal oculto">
@@ -127,6 +137,20 @@
         </tr>
         </thead>
         <tbody id="cuerpo-tabla-admin"></tbody>
+      </table>
+    </div>
+    <div class="gestionar-resenas">
+      <h3>Reseñas de Clientes</h3>
+      <table class="tabla-admin">
+        <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Reseña</th>
+          <th>Fecha</th>
+          <th>Acción</th>
+        </tr>
+        </thead>
+        <tbody id="cuerpo-tabla-resenas"></tbody>
       </table>
     </div>
   </div>

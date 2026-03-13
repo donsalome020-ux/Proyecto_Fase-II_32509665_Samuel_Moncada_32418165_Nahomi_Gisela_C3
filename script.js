@@ -19,6 +19,7 @@ let carrito = [];
 let historialCompras = [];
 let ordenCaja = [];
 let puntosLealtad = 150;
+let resenas = [];
 
 // --- FUNCIÓN UTILITARIA PARA AGRUPAR ---
 function agruparProductos(arreglo) {
@@ -63,12 +64,14 @@ function iniciarSesion() {
         renderizarCatalogo();
         renderizarHistorial();
         actualizarInterfazPuntos();
+        renderizarResenasCliente(); // NUEVO
     } else if (usuarioActual.rol === 'cajero') {
         document.getElementById('seccion-caja').classList.remove('oculto');
         renderizarCaja();
     } else if (usuarioActual.rol === 'admin') {
         document.getElementById('seccion-admin').classList.remove('oculto');
         renderizarAdmin();
+        renderizarResenasAdmin(); // NUEVO
     }
 }
 
@@ -316,5 +319,81 @@ function eliminarProducto(indice) {
     if(confirm("¿Borrar producto?")) {
         productos.splice(indice, 1);
         renderizarAdmin();
+    }
+}
+// --- 6. SISTEMA DE RESEÑAS ---
+
+// Evento para agregar una reseña desde el cliente
+document.getElementById('formulario-resena')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const texto = document.getElementById('texto-resena').value;
+
+    const nuevaResena = {
+        id: Date.now(),
+        usuario: usuarioActual.nombre,
+        texto: texto,
+        fecha: new Date().toLocaleDateString()
+    };
+
+    resenas.push(nuevaResena);
+    document.getElementById('formulario-resena').reset();
+    renderizarResenasCliente();
+    mostrarNotificacion("¡Reseña publicada con éxito!");
+});
+
+// Renderizar historial de reseñas para el cliente
+function renderizarResenasCliente() {
+    const contenedor = document.getElementById('lista-resenas-cliente');
+    if (!contenedor) return;
+    contenedor.innerHTML = '';
+
+    // Filtramos para mostrar solo las reseñas del usuario actual
+    const misResenas = resenas.filter(r => r.usuario === usuarioActual.nombre);
+
+    if (misResenas.length === 0) {
+        contenedor.innerHTML = '<p style="color: #666; margin-top: 10px;">Aún no has escrito ninguna reseña.</p>';
+        return;
+    }
+
+    // Mostramos las reseñas invertidas (la más reciente primero)
+    misResenas.slice().reverse().forEach(r => {
+        contenedor.innerHTML += `
+            <div class="tarjeta-resena">
+                <p><strong>Tú</strong> <span class="fecha-resena">- ${r.fecha}</span></p>
+                <p>"${r.texto}"</p>
+            </div>
+        `;
+    });
+}
+
+// Renderizar todas las reseñas para el administrador
+function renderizarResenasAdmin() {
+    const cuerpoTabla = document.getElementById('cuerpo-tabla-resenas');
+    if (!cuerpoTabla) return;
+    cuerpoTabla.innerHTML = '';
+
+    if (resenas.length === 0) {
+        cuerpoTabla.innerHTML = '<tr><td colspan="4" style="text-align:center">No hay reseñas registradas</td></tr>';
+        return;
+    }
+
+    resenas.forEach(r => {
+        cuerpoTabla.innerHTML += `
+            <tr>
+                <td>${r.usuario}</td>
+                <td>"${r.texto}"</td>
+                <td>${r.fecha}</td>
+                <td><button class="btn-peligro" onclick="eliminarResena(${r.id})">Eliminar</button></td>
+            </tr>
+        `;
+    });
+}
+
+// Función del admin para eliminar reseñas
+function eliminarResena(id) {
+    if(confirm("¿Estás seguro de que deseas eliminar esta reseña?")) {
+        // Filtramos para quitar la reseña con el id proporcionado
+        resenas = resenas.filter(r => r.id !== id);
+        renderizarResenasAdmin(); // Actualizamos la tabla del admin
     }
 }
