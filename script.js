@@ -19,7 +19,9 @@ let carrito = [];
 let historialCompras = [];
 let ordenCaja = [];
 let puntosLealtad = 150;
-let resenas = [];
+let resenas = [
+    { id: 101, usuario: 'Estudiante UCV', texto: '¡Excelentes empanadas!', fecha: '12/3/2026' }
+];
 
 // --- FUNCIÓN UTILITARIA PARA AGRUPAR ---
 function agruparProductos(arreglo) {
